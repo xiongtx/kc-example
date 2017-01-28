@@ -1,0 +1,46 @@
+# Docker environment for local development
+version: '2'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:3.1.1
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+    expose:
+      - 2181
+
+  kafka:
+    expose:
+      - 9092
+      - 8082
+    environment:
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_BROKER_ID=0
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+    image: confluentinc/cp-kafka:3.1.1
+    depends_on:
+      - zookeeper
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_kc-example.yml
+    environment:
+      - ARTIFACTORY_PASSWORD=${ARTIFACTORY_PASSWORD}
+      - ARTIFACTORY_USER=${ARTIFACTORY_USER}
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+    depends_on:
+      - kafka
+      - zookeeper
+
+  kafka-tools:
+    image: confluentinc/cp-kafka:3.1.1
+    depends_on:
+      - zookeeper
+      - kafka
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+    working_dir: /usr/src/app
+    entrypoint: /bin/bash

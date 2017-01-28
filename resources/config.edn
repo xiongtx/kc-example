@@ -1,0 +1,4 @@
+{:kafka {:consumer {"bootstrap.servers" #env BOOTSTRAP_SERVERS
+                    "group.id" "kc-example.consumer"}
+         :producer {"bootstrap.servers" #env BOOTSTRAP_SERVERS}
+         :zookeeper {"zookeeper.connect" #env ZOOKEEPER_CONNECT}}}

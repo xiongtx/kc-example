@@ -1,4 +1,14 @@
 {:kafka {:consumer {"bootstrap.servers" #env BOOTSTRAP_SERVERS
                     "group.id" "kc-example.consumer"}
          :producer {"bootstrap.servers" #env BOOTSTRAP_SERVERS}
-         :zookeeper {"zookeeper.connect" #env ZOOKEEPER_CONNECT}}}
+         :zookeeper {"zookeeper.connect" #env ZOOKEEPER_CONNECT}}
+ :test {:broker {"log.dirs" "/tmp/kafka-log"
+                 "zookeeper.connect" #env ZOOKEEPER_CONNECT}
+        :consumer {"auto.offset.reset" "latest"
+                   "bootstrap.servers" #env BOOTSTRAP_SERVERS
+                   "enable.auto.commit" "false"
+                   "group.id" "kc-example"}
+        :embedded-kafka? #boolean #env EMBEDDED_KAFKA
+        :producer {"bootstrap.servers" #env BOOTSTRAP_SERVERS}
+        :fuse-timeout-ms 20000
+        :zookeeper {"zookeeper.connect" #env ZOOKEEPER_CONNECT}}}

@@ -21,7 +21,11 @@
                   {:url "https://fundingcircle.artifactoryonline.com/fundingcircle/libs-snapshot-local"
                    :username [:gpg :env/artifactory_user]
                    :password [:gpg :env/artifactory_password]}]]
-  :profiles {:uberjar {:aot :all}}
+  :profiles {:dev {:dependencies [[fundingcircle/kafka.test "0.1.5"]]
+                   :env {:bootstrap-servers "localhost:9092"
+                         :embedded-kafka "true"
+                         :zookeeper-connect "localhost:2181"}}
+             :uberjar {:aot :all}}
   :local-repo ".repo"
   :main kc-example.core
   :target-path "target/%s")

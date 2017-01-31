@@ -38,3 +38,24 @@ Key: nil Value: A
 Key: nil Value: B
 Key: nil Value: C
 ```
+
+### Testing
+
+`cd` to the project directory and run:
+
+
+```
+lein test
+```
+
+You can also test specific namespaces:
+
+```
+lein test :only kc-example.core-test
+```
+
+Or specific tests:
+
+```
+lein test kc-example.core-test/producer-consumer-test
+```
